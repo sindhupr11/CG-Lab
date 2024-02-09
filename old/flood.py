@@ -3,26 +3,28 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.GLUT import *
 import numpy as numpy
+import math
 import sys
 
 wsize = 500
 point = 10
-sys.setrecursionlimit(1000)
+sys.setrecursionlimit(1000000)
 
 def init():
     glClearColor(0.0,0.0,0.0,1.0)
     gluOrtho2D(0,wsize,wsize,0)
-    glMatrixMode(GL_PROJECTION)
 
 def draw():
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
     glColor3f(1.0, 0.1, 0.2)
+    glPolygonMode(GL_FRONT_AND_BACK,GL_FILL)
     glPointSize(point)
     glBegin(GL_POLYGON)
-    glVertex2f(100,100)
-    glVertex2f(400,100)
-    glVertex2f(400,400)
-    glVertex2f(100,400)
+    for i in range(1000):
+        theta=2.0*math.pi*i/1000
+        x=250+100*math.cos(theta)
+        y=250+100*math.sin(theta)
+        glVertex2f(x,y)
     glEnd()
     glFlush()
 
@@ -33,6 +35,7 @@ def setpixel(x,y,fillcolor=(0,0,0)):
     glVertex2f(x,y)
     glEnd()
     glFlush()
+
     
 def getpixel(x, y):
     data = glReadPixels(x, wsize - y, 1, 1, GL_RGB, GL_FLOAT)
@@ -54,13 +57,14 @@ def mouse(btn,state,x,y):
 
 def main():
     glutInit()
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB)
+    glutInitDisplayMode( GLUT_RGB)
     glutInitWindowSize(wsize,wsize)
     glutInitWindowPosition(100,100)
     glutCreateWindow("Point")
+    init()
     glutDisplayFunc(draw)
     glutMouseFunc(mouse)
-    init()
+    
     glutMainLoop()
 
 main()

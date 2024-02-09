@@ -50,7 +50,8 @@ def draw_scene():
     glutSwapBuffers()
 
 def update_frame(_):
-    glutTimerFunc(16, update_frame, 0)  # Schedule the next update
+    glutTimerFunc(int(1000/60), update_frame, 0)  # Schedule the next update
+    draw_scene()
     glutPostRedisplay()
 
 def main():
